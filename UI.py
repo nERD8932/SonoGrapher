@@ -1,9 +1,10 @@
-from PyQt6.QtCore import Qt, pyqtSignal as Signal, QMimeData
-from PyQt6.QtGui import QFont, QDropEvent
+from PyQt6.QtCore import Qt, pyqtSignal as Signal, QMimeData, QSize
+from PyQt6.QtGui import QFont, QDropEvent, QIcon
 from PyQt6.QtWidgets import *
 from qasync import QApplication, asyncSlot, QEventLoop
 import asyncio
 import sys
+import ctypes
 
 
 class MainWindow(QMainWindow):
@@ -12,8 +13,12 @@ class MainWindow(QMainWindow):
     """
     def __init__(self):
         super().__init__()
+        myappid = 'smu.nerd.sonographer.v1'  # arbitrary string
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+
         self.setWindowTitle("SonoGrapher")
-        self.setWindowIcon(QtGui.QIcon('favicon.png'))
+        app_icon = QIcon('gui/icons/favicon.png')
+        self.setWindowIcon(app_icon)
 
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
