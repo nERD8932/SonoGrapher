@@ -6,10 +6,9 @@ import asyncio
 import sys
 import ctypes
 
-
 class MainWindow(QMainWindow):
     """
-        Simple class to generate a PyQt6 GUI window.
+    Simple class to generate a PyQt6 GUI window.
     """
     def __init__(self):
         super().__init__()
@@ -30,22 +29,48 @@ class MainWindow(QMainWindow):
         self.app_title.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.layout.addWidget(self.app_title)
 
-        drop_here = QLabel("\n\nDrag and drop a .txt or .wav file.\n\n")
-        drop_here.setMargin(20)
-        drop_here.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        drop_here.setStyleSheet('''
+        self.drop_here = QLabel("\n\nDrag and drop a .txt or .wav file.\n\n")
+        self.drop_here.setMargin(20)
+        self.drop_here.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.drop_here.setStyleSheet('''
             QLabel{
                 border: 3px dashed #aaa;
                 font-size: 18px;
             }
         ''')
-
-        self.layout.addWidget(drop_here)
+        self.drop_here.setAcceptDrops(True)  # Enable drag and drop on this label
+        self.drop_here.setObjectName("drop_here")
+        self.layout.addWidget(self.drop_here)
 
         self.container = QWidget()
         self.container.setLayout(self.layout)
+        self.container.setAcceptDrops(True)
         self.setCentralWidget(self.container)
 
+    def dragEnterEvent(self, event: QDropEvent):
+        """Handle drag events"""
+        if event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            if urls:
+                file_path = urls[0].toLocalFile()  # Get the local file path
+                if file_path[-3:] == "wav" or file_path[-3:] == "txt ":
+                    event.acceptProposedAction()
+                else:
+                    event.ignore()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event: QDropEvent):
+        """Handle drop events"""
+        urls = event.mimeData().urls()
+        if urls:
+            file_path = urls[0].toLocalFile()  # Get the local file path
+            if file_path[-3:] == "wav" or file_path[-3:] == "txt ":
+                self.drop_here.setText(f"File Dropped: {file_path}")  # Update label text with file path
+                print(f"File dropped: {file_path}")  # You can further process this file as needed
+                
+            else:
+                event.ignore()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
