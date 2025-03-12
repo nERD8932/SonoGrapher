@@ -1,0 +1,6 @@
+.env
+*.sqlite
+logs/*.log
+logs/*.log.*
+.idea
+uploaded
