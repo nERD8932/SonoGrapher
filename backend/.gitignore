@@ -4,3 +4,5 @@ logs/*.log
 logs/*.log.*
 .idea
 uploaded
+generated
+__pycache__
