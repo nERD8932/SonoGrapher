@@ -111,18 +111,21 @@ Do not deviate from the format.
             self.log.info(f"Document generation request received.", extra=extra)
             try:
                 if 'audio' in request.files:
-                    # abort(400, "Missing audio file.")
+                    self.log.info(f"Using audio file.", extra=extra)
                     self.log.info(f"Audio file transcription started.", extra=extra)
-                    data = self.convert_audio(request.files['audio'], ak)
+                    data = self.convert_audio(request.files['audio'], ak, extra)
                     self.log.info(f"Audio file transcription finished.", extra=extra)
                     if type(data) is not str:
                         self.log.error(f"Audio file transcription failed.", extra=extra)
                         return data
                     self.log.info(f"Transcribed text: {data}", extra=extra)
+                elif 'text' in request.files:
+                    self.log.info(f"Using text file.", extra=extra)
+                    data = self.extractText(request.files['text'], ak, extra)
                 else:
-                    self.log.info(f"Text data assigned.", extra=extra)
-                    data = str(request.get_data())
-                
+                    self.log.info(f"User request had no file attached!", extra=extra)
+                    abort(400, "No file attached!")
+
                 self.log.info(f"Started LLM generation.", extra=extra)
                 result = ollama.generate(prompt=f"{self.system_prompt}\nHere is the paragraph:\n {data}", model='deepseek-r1:7b', system=self.system_prompt)
                 
@@ -140,7 +143,7 @@ Do not deviate from the format.
                 return Response("An error has occurred, please try again later!", mimetype="text/plain")
 
 
-    def convert_audio(self, audio, ak) -> Response or str:
+    def convert_audio(self, audio, ak, extra) -> Response or str:
         try:
             file = bytearray(audio.read())
             with open(f'./backend/uploaded/{ak}.wav', mode='bx') as f:
@@ -160,12 +163,28 @@ Do not deviate from the format.
             return result["text"]
 
         except Exception as e:
-            self.log.error(e)
+            self.log.error(e, extra=extra)
             return Response("An error has occurred with transcription, please try again later!", mimetype="text/plain")
 
         finally:
             if os.path.exists(f"./backend/uploaded/{ak}.wav"):
                 os.remove(f'./backend/uploaded/{ak}.wav')
+
+    def extractText(self, text, ak, extra):
+        try:
+            file = bytearray(text.read())
+            with open(f'./backend/uploaded/{ak}.txt', mode='bx') as f:
+                f.write(file)
+            text = ""
+            with open(f'./backend/uploaded/{ak}.txt', mode='r') as f:
+                text = f.read()
+            return text
+        except Exception as e:
+            self.log.error(e, extra=extra)
+            return Response("An error occurred while reading the file, please try again later!", mimetype="text/plain")
+        finally:
+            if os.path.exists(f"./backend/uploaded/{ak}.txt"):
+                os.remove(f'./backend/uploaded/{ak}.txt')
 
     @staticmethod
     def logging_bp():
