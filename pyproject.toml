@@ -1,0 +1,23 @@
+[project]
+name = "sonographer"
+version = "0.1.0"
+description = "SonoGrapher is an application bundle with a Flask based backend server that uses Ollama and OpenAI's Whisper, along with a PyQt6 frontend for desktop apps. It uses docxtpl and jinja2 to fill a predefined document template with information extracted from the two AI models. It's highly customizable and has been built with ease-of-use and robustness in mind."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "docxtpl>=0.19.1",
+    "flask>=3.1.0",
+    "ollama>=0.4.7",
+    "openai>=1.66.3",
+    "openai-whisper>=20240930",
+    "pyinstaller>=6.12.0",
+    "pyqt6>=6.8.1",
+    "python-dotenv>=1.0.1",
+    "qasync>=0.27.1",
+    "torch>=2.6.0",
+    "torchaudio>=2.6.0",
+]
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true

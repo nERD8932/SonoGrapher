@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import logging
 from logging.handlers import RotatingFileHandler
 import os
-from database import create_connection
+from database import create_connection, create_default
 import argparse
 import json
 from docxtpl import DocxTemplate
@@ -42,7 +42,10 @@ class Backend:
                 exit(-9)
 
         # Load API Keys from db
+        if not os.path.exists("./backend/api_keys.sqlite"):
+            create_default()
         self.db = create_connection('./backend/api_keys.sqlite', self.log)
+
         self.api_keys = {x[0]: x[1] for x in self.db.execute('select * from api_keys').fetchall()}
 
         # Load Speech-To-Text through Whisper
@@ -189,6 +192,7 @@ class Backend:
 
     def validate_key(self, key: str):
         if key not in self.api_keys:
+            self.log.info(f"Invalid API key used: {key}")
             abort(401, "Invalid API key.")
 
     def load_whisper(self):

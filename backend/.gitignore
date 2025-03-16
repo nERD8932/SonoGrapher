@@ -3,6 +3,10 @@
 logs/*.log
 logs/*.log.*
 .idea
-uploaded
-generated
+/uploaded/*.txt
+/uploaded/*.wav
+/generated/*.docx
 __pycache__
+/build/
+/dist/
+/_internal

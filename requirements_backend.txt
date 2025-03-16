@@ -1,0 +1,8 @@
+docxtpl
+Flask
+ollama
+openai
+openai-whisper
+python-dotenv
+torch
+pyinstaller
