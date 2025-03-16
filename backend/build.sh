@@ -1,5 +1,6 @@
 #!/bin/sh
 echo 'Installing...'
+. ../.venv/bin/activate
 pyinstaller --paths=..\.venv\Lib\site-packages\ --icon=..\gui\icons\favicon.ico app.py -n "SonoGrapher Backend v1.0" -D --optimize 2 --noconfirm
 mv "./dist/SonoGrapher Backend v1.0/" "../"
 mkdir "../SonoGrapher Backend v1.0/backend/logs/"
