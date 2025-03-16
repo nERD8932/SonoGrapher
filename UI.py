@@ -6,6 +6,7 @@ import sys
 import ctypes
 import os
 import requests
+from pprint import pprint
 from dotenv import load_dotenv
 from qasync import asyncSlot, QEventLoop
 
@@ -111,7 +112,7 @@ class MainWindow(QMainWindow):
         try:
             # Move the blocking requests call to a separate thread
             response = await asyncio.to_thread(self.upload_file, headers)
-
+            # print(response)
             if not os.path.exists('./docs/'):
                 os.makedirs('./docs/')
 
@@ -135,12 +136,14 @@ class MainWindow(QMainWindow):
         """ Synchronous function to run in a separate thread """
         with open(self.file_loc, 'rb') as file:
 
-            if file_path[-3:] == "wav":
+            if self.file_loc[-3:] == "wav":
                 files = {'audio': file}
             else:
                 files = {'text': file}
 
-            return requests.post("http://127.0.0.1:5000/api/generate-report", headers=headers, files=files)
+            r = requests.post("http://127.0.0.1:5000/api/generate-report", headers=headers, files=files)
+            # pprint(vars(r))
+            return r
 
     def dragEnterEvent(self, event: QDropEvent, **kwargs):
         """ Handle drag events
