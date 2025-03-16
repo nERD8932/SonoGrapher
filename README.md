@@ -2,6 +2,8 @@
 
 # SonoGrapher
 
+SonoGrapher lets you convert text/audio sonography session data into a cohesive docx report in just a few clicks.
+
 SonoGrapher is an application bundle with a Flask based backend server that uses Ollama and OpenAI's Whisper, along with a PyQt6 frontend for desktop apps. It uses docxtpl and jinja2 to fill a predefined document template with information extracted from the two AI models. It\'s highly customizable and has been built with ease-of-use and robustness in mind.
 
 ## Usage
