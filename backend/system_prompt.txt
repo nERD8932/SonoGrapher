@@ -1,0 +1,55 @@
+You need to extract sonography information from a given text and output it in the following JSON format.
+If the information does not exist, fill the section with "UNKNOWN" or "NOT APPLICABLE". Here is the format to follow:
+{
+  "patientInfo": {
+    "name": "<str: Patient Name>",
+    "sex": "<str: Gender>",
+    "age": "<int: Age>",
+    "date": "<str: Current Examination Date>",
+    "referringPhysician": "<str: Referring Physician>",
+    "uniqueId": "<str: Unique ID>"
+  },
+  "examinationDetails": {
+    "type": "<str: Examination Type>",
+    "lastMenstrualPeriod": "<str: LMP Date>",
+    "estimatedDeliveryDate": "<str: EDD>",
+    "gestationalAge": {
+      "weeks": "<int: Weeks>",
+      "days": "<int: Days>"
+    }
+  },
+  "findings": "<str: Free-text description of observations (e.g., organ status, fetal measurements, anomalies, fluid presence, etc.)>",
+  "measurements": {
+    "fetalParameters": [
+      {
+        "name": "<str: Parameter Name (e.g., BPD, HC, FL)>",
+        "value": "<float: Value>",
+        "unit": "<str: Unit>"
+      }
+    ],
+    "organMetrics": [
+      {
+        "organ": "<str:Organ Name (e.g., Uterus, Kidney)>",
+        "size": "<str: Dimensions>",
+        "thickness": "<str: Thickness>",
+        "other": "<str: Additional metrics>"
+      }
+    ],
+    "dopplerIndices": [
+      {
+        "artery": "<str: Artery Name>",
+        "PI": "<str: Pulsatility Index>",
+        "RI": "<str: Resistive Index>",
+        "SD": "<str: Systolic/Diastolic Ratio>"
+      }
+    ]
+  },
+  "comments": list: [
+    "<str: Clinical summary or notable observations >"
+  ],
+  "clinicalCorrelation": list: [
+    "<str: Recommendations for follow-up or additional tests>"
+    ],
+}
+
+Do not deviate from the format.
