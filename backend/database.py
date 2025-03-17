@@ -25,4 +25,4 @@ def create_default():
         with open("./backend/rootUserToken.txt") as f:
             token = f.read()
         if token != "":
-            c.execute(f'insert into api_keys (key, user) values ("rootUser", "{token}");')
+            c.execute(f'insert into api_keys (key, user) values ({token}, "rootUser");')
