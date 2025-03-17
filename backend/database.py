@@ -13,16 +13,24 @@ def create_connection(path, l: logging.Logger = logging.getLogger()):
 
     return connection
 
+
 def create_table():
     c = create_connection('./backend/api_keys.sqlite')
-    c.execute('create table api_keys(key text primary key , user text);')
+    cursor = c.cursor()
+    cursor.execute('create table api_keys(key text primary key , user text);')
+    c.commit()
+    c.close()
+
 
 def create_default():
     c = create_connection('./backend/api_keys.sqlite')
-    c.execute('create table api_keys(key text primary key , user text);')
+    cursor = c.cursor()
     if os.path.exists("./backend/rootUserToken.txt"):
-        token = ""
         with open("./backend/rootUserToken.txt") as f:
-            token = f.read()
-        if token != "":
-            c.execute(f'insert into api_keys (key, user) values ({token}, "rootUser");')
+            token = str(f.read())
+    else:
+        token = 'Brhyd7MpfC'
+
+    cursor.execute(f'insert into main.api_keys (key, user) values ("{token}", "rootUser");')
+    c.commit()
+    c.close()

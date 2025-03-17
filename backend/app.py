@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 import logging
 from logging.handlers import RotatingFileHandler
 import os
-from database import create_connection, create_default
+from backend.database import create_connection, create_default, create_table
 import argparse
 import json
 from docxtpl import DocxTemplate
@@ -43,11 +43,15 @@ class Backend:
 
         # Load API Keys from db
         if not os.path.exists("./backend/api_keys.sqlite"):
+            create_table()
             create_default()
 
         self.db = create_connection('./backend/api_keys.sqlite', self.log)
+        cursor = self.db.cursor()
 
-        self.api_keys = {x[0]: x[1] for x in self.db.execute('select * from api_keys').fetchall()}
+        self.api_keys = {x[0]: x[1] for x in cursor.execute('select * from main.api_keys').fetchall()}
+
+        self.db.close()
 
         # Load Speech-To-Text through Whisper
         self.stt = self.load_whisper()
