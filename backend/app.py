@@ -44,6 +44,7 @@ class Backend:
         # Load API Keys from db
         if not os.path.exists("./backend/api_keys.sqlite"):
             create_default()
+
         self.db = create_connection('./backend/api_keys.sqlite', self.log)
 
         self.api_keys = {x[0]: x[1] for x in self.db.execute('select * from api_keys').fetchall()}

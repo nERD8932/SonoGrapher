@@ -14,12 +14,12 @@ def create_connection(path, l: logging.Logger = logging.getLogger()):
     return connection
 
 def create_table():
-    c = create_connection('./api_keys.sqlite')
+    c = create_connection('./backend/api_keys.sqlite')
     c.execute('create table api_keys(key text primary key , user text);')
 
 def create_default():
-    c = create_connection('./api_keys.sqlite')
-    c.execute('create table if not exists api_keys(key text primary key , user text);')
+    c = create_connection('./backend/api_keys.sqlite')
+    c.execute('create table api_keys(key text primary key , user text);')
     if os.path.exists("./backend/rootUserToken.txt"):
         token = ""
         with open("./backend/rootUserToken.txt") as f:

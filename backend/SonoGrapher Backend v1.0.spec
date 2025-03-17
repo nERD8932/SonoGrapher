@@ -12,14 +12,14 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
-    optimize=2,
+    optimize=0,
 )
 pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
-    [('O', None, 'OPTION'), ('O', None, 'OPTION')],
+    [],
     exclude_binaries=True,
     name='SonoGrapher Backend v1.0',
     debug=False,
