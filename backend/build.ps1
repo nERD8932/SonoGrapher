@@ -2,7 +2,7 @@ Write-Host 'Installing...'
 
 & "..\.venv\Scripts\Activate"
 
-pyinstaller --paths="..\.venv\Lib\site-packages\" --icon="..\gui\icons\favicon.ico" app.py -n "SonoGrapher Backend v1.0" -D --optimize 2 --noconfirm
+pyinstaller --paths="..\.venv\Lib\site-packages\" --icon="..\gui\icons\favicon.ico" app.py -n "SonoGrapher Backend v1.0" -D --noconfirm
 Move-Item -Path "./dist/SonoGrapher Backend v1.0/" -Destination "../" -Force
 
 New-Item -ItemType Directory -Force -Path "../SonoGrapher Backend v1.0/backend/logs/"
