@@ -22,7 +22,7 @@ The desktop frontend is a simple PyQt6 interface that uses the `requests` packag
 
 The backend is a Flask based python server. By default, this server uses OpenAI's API for information extraction and audio transcription. If you do not have access to the API, or do not wish to use it, use the `--use-local-llm` & `--use-local-stt` flags while running `app.py` to use Ollama and OpenAI Whisper, and run the models locally. Please keep in mind that both of these frameworks can be computationally intensive. Having a GPU in your server machine is recommended. By default, the server also only runs locally. If you wish to expose the API publicly, you can do so through the Flask environment variables. Keep in mind that you will also have to change the URL the UI connects to, if accessing the API from a different machine.
 
-### Runing the Backend Flask Server
+### Running the Backend Flask Server
 
 Here is a general overview of how to run the server:
 
@@ -45,6 +45,7 @@ Here is a general overview of how to run the server:
   pip install -r 'requirements_backend.txt'
   ```
 - (Optional) If you wish to use your GPU for Whisper transcription/Ollama, install [PyTorch with cuda](https://pytorch.org/get-started/locally/).
+
   ```bash
   pip install -r 'requirements_cuda.txt'
   ```
@@ -55,18 +56,22 @@ Here is a general overview of how to run the server:
 
 Additional features:
 
-- Customize the LLM's system prompt and JSON output format in `backend/system_prompt.txt`
-- Customize the output document template in SonoGrapherTemplate.docx
+- **System Prompt:** Customize the LLM's system prompt and JSON output format in `backend/system_prompt.txt`
+- **Template:** Modify the output document template in SonoGrapherTemplate.docx
+- **Logging:** Logs are stored in backend/logs/debug.log using a rotating file handler. Temporary uploads are managed in backend/uploaded/.
 
-### Runing the Desktop Frontend
+### Running the Desktop Frontend
+
 Here is a general overview of how to run the desktop frontend
 
 - Clone the repository.
-    ```bash
-    git clone https://github.com/your-repo/SonoGrapher.git
-    cd SonoGrapher
-    ```
+
+  ```bash
+  git clone https://github.com/your-repo/SonoGrapher.git
+  cd SonoGrapher
+  ```
 - Navigate to the `SonoGrapher` folder and install dependencies through a terminal by using `uv sync`, if you have uv installed (recommended), or by setting up a virtual environment using `pip`.
+
   ```bash
   uv sync
   ```
@@ -81,6 +86,7 @@ Here is a general overview of how to run the desktop frontend
 - An executable called `SonoGrapher_Frontend(.exe)` will have been created in the main directory of the repository. Navigate into it and open the executable to start the server.
 
 ## API Endpoint
+
 * **Generate Report:**`POST /api/generate-report`
   * Accepts audio or text files.
   * Requires an API key in the header.
@@ -88,7 +94,9 @@ Here is a general overview of how to run the desktop frontend
   * Request format - Include bearer token in header, attach form-data file with key 'text' for a `.txt` file or 'audio' for a `.wav` file
 
 ## Contact
+
 Feel free to contact me on [Discord](https://discordapp.com/users/296659492588879885) or on [Linkedin](https://www.linkedin.com/in/samir-amin-sheikh/)
 
 ## License
+
 This project is licensed under the terms of the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
