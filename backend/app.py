@@ -115,7 +115,9 @@ class Backend:
                 dt.save(f"./backend/generated/{ak}.docx")
                 
                 self.log.info(f"Done!", extra=extra)
-                return send_file(f"generated\\{ak}.docx", as_attachment=True, download_name='report.docx')
+                p = os.path.join(os.getcwd(), "backend\\generated", f"{ak}.docx")
+                # self.log.info(p, extra=extra)
+                return send_file(p, as_attachment=True, download_name='report.docx')
             
             except Exception as e:
                 self.log.error(e, extra=extra)

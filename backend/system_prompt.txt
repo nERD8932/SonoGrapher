@@ -44,12 +44,8 @@ If the information does not exist, fill the section with "UNKNOWN" in all capita
       }
     ]
   },
-  "comments": list: [
-    "<str: List of Clinical summary or notable observations >"
-  ],
-  "clinicalCorrelation": list: [
-    "<str: List of Recommendations for follow-up or additional tests>"
-    ],
+  "comments": "<str: Clinical summary or notable observations>",
+  "clinicalCorrelation": "<str: Recommendations for follow-up or additional tests>"
 }
 
 Do not deviate from the format.
