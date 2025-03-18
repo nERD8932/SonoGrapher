@@ -8,10 +8,11 @@ from dotenv import load_dotenv
 import logging
 from logging.handlers import RotatingFileHandler
 import os
-from backend.database import create_connection, create_default, create_table
+from database import create_connection, create_default, create_table
 import argparse
 import json
 from docxtpl import DocxTemplate
+import sys
 
 
 
@@ -38,8 +39,9 @@ class Backend:
 
         if not self.use_local_llm or not self.use_local_stt:
             if self.openai_key == "":
-                self.log.critical("You forgot to set your OpenAI API key.")
-                exit(-9)
+                self.log.critical("You forgot to set your OpenAI API key. Please set it and reopen the app.")
+                input("Press any key to exit...")
+                sys.exit(-9)
 
         # Load API Keys from db
         if not os.path.exists("./backend/api_keys.sqlite"):
@@ -210,7 +212,8 @@ class Backend:
                 return whisper.load_model(self.local_stt, device=device)
             except Exception as e:
                 self.log.critical(e)
-                exit(-10)
+                input("Press any key to exit...")
+                sys.exit(-10)
         else:
             client = OpenAI(api_key=self.openai_key)
             return client
@@ -275,8 +278,25 @@ if __name__ == "__main__":
                         help='API key for OpenAI models incase you\'re not running models locally.',
                         dest="openai_api_key")
 
-    args = parser.parse_args()
+    parser.add_argument('--host',
+                        type=str,
+                        default='0.0.0.0',
+                        help='Host IP address.',
+                        dest="host")
 
+    parser.add_argument('--port',
+                        type=str,
+                        default='5000',
+                        help='Host port.',
+                        dest="port")
+
+    parser.add_argument('--debug',
+                        action='store_true',
+                        help='Set Flask Debug flag',
+                        dest="debug")
+
+    args = parser.parse_args()
+    parser.print_help()
     backend = Backend(use_local_llm=args.use_local_llm,
                       use_local_stt=args.use_local_stt,
                       openai_llm=args.openai_llm_model,
@@ -284,4 +304,5 @@ if __name__ == "__main__":
                       local_llm=args.local_llm_model,
                       local_stt=args.local_stt_model,
                       openai_key=args.openai_api_key)
-    backend.app.run()
+
+    backend.app.run(debug=args.debug, host=args.host, port=args.port)

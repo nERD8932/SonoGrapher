@@ -2,5 +2,9 @@
 .venv
 .env
 docs/*.docx
-/SonoGrapher Backend v1.*
+/SonoGrapher_Backend
+SonoGrapher_Frontend
+SonoGrapher_Frontend.exe
 /_internal
+/dist/
+/build/
