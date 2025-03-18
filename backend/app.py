@@ -61,7 +61,7 @@ class Backend:
         # Load Deepseek-R1 into memory.
         self.system_prompt = ""
         with open('./backend/system_prompt.txt', 'r') as f:
-            self.system_prompt = f.readline()
+            self.system_prompt = f.read()
 
         if self.use_local_llm:
             ollama.generate(model=self.local_llm, keep_alive=20.0, system=self.system_prompt)

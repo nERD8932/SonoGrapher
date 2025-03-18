@@ -27,7 +27,7 @@ def create_default():
     cursor = c.cursor()
     if os.path.exists("./backend/rootUserToken.txt"):
         with open("./backend/rootUserToken.txt") as f:
-            token = str(f.read())
+            token = str(f.readline())
     else:
         token = 'Brhyd7MpfC'
 
