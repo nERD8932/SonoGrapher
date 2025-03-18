@@ -1,4 +1,4 @@
-![SonoGrapher Logo](assets/readme_banner.png)
+![SonoGrapher Logo](./assets/readme_banner.png)
 
 # **SonoGrapher**
 
@@ -46,7 +46,6 @@ Here is a general overview of how to run the server:
   ```
 - (Optional) If you wish to use your GPU for Whisper transcription/Ollama, install [PyTorch with cuda](https://pytorch.org/get-started/locally/).
   ```bash
-  python -m venv .venv
   pip install -r 'requirements_cuda.txt'
   ```
 - Navigate to the `backend` folder.
@@ -90,3 +89,6 @@ Here is a general overview of how to run the desktop frontend
 
 ## Contact
 Feel free to contact me on [Discord](https://discordapp.com/users/296659492588879885) or on [Linkedin](https://www.linkedin.com/in/samir-amin-sheikh/)
+
+## License
+This project is licensed under the terms of the GNU General Public License v3.0. See the [LICENSE](./LICENSE) file for details.
