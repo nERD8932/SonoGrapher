@@ -228,7 +228,7 @@ if __name__ == "__main__":
                     '(with the help of Ollama and OpenAI\'s Whisper) lets you convert text/audio '
                     'sonography session data into a cohesive docx report in just a few clicks. It\'s highly '
                     'customizable and has been built with ease-of-use and robustness in mind.',
-        epilog='Feel free to contact the developer (me) @nerd8932 on Discord or GitHub')
+        epilog='Feel free to contact the developer (me) @nerd8932 on Discord or GitHub\n')
 
     parser.add_argument('--use-local-llm',
                         help='Use Ollama to run an LLM locally for prompting.',
@@ -296,6 +296,17 @@ if __name__ == "__main__":
                         dest="debug")
 
     args = parser.parse_args()
+    print(
+        r'''
+
+     ____                     ____                 _
+    / ___|  ___  _ __   ___  / ___|_ __ __ _ _ __ | |__   ___ _ __
+    \___ \ / _ \| '_ \ / _ \| |  _| '__/ _` | '_ \| '_ \ / _ \ '__|
+     ___) | (_) | | | | (_) | |_| | | | (_| | |_) | | | |  __/ |
+    |____/ \___/|_| |_|\___/ \____|_|  \__,_| .__/|_| |_|\___|_|
+                                            |_|
+
+    ''')
     parser.print_help()
     backend = Backend(use_local_llm=args.use_local_llm,
                       use_local_stt=args.use_local_stt,

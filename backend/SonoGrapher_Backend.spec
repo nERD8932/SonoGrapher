@@ -1,11 +1,15 @@
 # -*- mode: python ; coding: utf-8 -*-
+from PyInstaller.utils.hooks import copy_metadata
+
+datas = [('../.venv/Lib/site-packages/whisper', 'whisper/')]
+datas += copy_metadata('openai-whisper', recursive=True)
 
 
 a = Analysis(
     ['app.py'],
     pathex=['../.venv/Lib/site-packages/'],
     binaries=[],
-    datas=[],
+    datas=datas,
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

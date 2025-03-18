@@ -27,7 +27,7 @@ catch {
 try{
     . "../.venv/Scripts/activate.ps1"
 
-    pyinstaller --paths="../.venv/Lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm --recursive-copy-metadata "openai-whisper"
+    pyinstaller --paths="../.venv/Lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm --recursive-copy-metadata "openai-whisper" --add-data "../.venv/Lib/site-packages/whisper;whisper/"
 
     if (Test-Path "../SonoGrapher_Backend/") {
         Remove-Item "../SonoGrapher_Backend/" -Recurse
@@ -36,6 +36,7 @@ try{
 
     New-Item -ItemType Directory -Force -Path "../SonoGrapher_Backend/backend/logs/"
     New-Item -ItemType Directory -Force -Path "../SonoGrapher_Backend/backend/uploaded/"
+    New-Item -ItemType Directory -Force -Path "../SonoGrapher_Backend/backend/generated/"
 
     Copy-Item -Path "./app.py" -Destination "../SonoGrapher_Backend/" -Force
     Copy-Item -Path "./database.py" -Destination "../SonoGrapher_Backend/" -Force
