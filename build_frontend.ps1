@@ -2,7 +2,20 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+Write-Host @"
+  ____                     ____                 _
+ / ___|  ___  _ __   ___  / ___|_ __ __ _ _ __ | |__   ___ _ __
+ \___ \ / _ \| '_ \ / _ \| |  _| '__/ _` | '_ \| '_ \ / _ \ '__|
+  ___) | (_) | | | | (_) | |_| | | | (_| | |_) | | | |  __/ |
+ |____/ \___/|_| |_|\___/ \____|_|  \__,_| .__/|_| |_|\___|_|
+                                         |_|
+"@
+
+Write-Host ""
+Write-Host ""
 Write-Host "Installing..."
+Write-Host ""
+Write-Host ""
 try
 {
     # Activate virtual environment
@@ -20,11 +33,18 @@ try
     # Move the new executable
     Move-Item "./dist/SonoGrapher_Frontend.exe" "./" -Force
 
-    Write-Host "Done!"
-    Read-Host "Press any key to continue..."
+    Write-Host ""
+    Write-Host ""
+    Write-Host 'Done!'
+    Write-Host ""
+    Write-Host ""
 }
 catch {
+    Write-Host ""
+    Write-Host ""
     Write-Host "An error occurred: $_" -ForegroundColor Red
+    Write-Host ""
+    Write-Host ""
     Read-Host 'Press a key to continue...'
     exit 1
 }
