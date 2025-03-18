@@ -27,7 +27,7 @@ catch {
 try{
     . "../.venv/Scripts/activate.ps1"
 
-    pyinstaller --paths="../.venv/Lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm
+    pyinstaller --paths="../.venv/Lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm --recursive-copy-metadata "openai-whisper"
 
     if (Test-Path "../SonoGrapher_Backend/") {
         Remove-Item "../SonoGrapher_Backend/" -Recurse
@@ -42,7 +42,7 @@ try{
     Copy-Item -Path "./SonoGrapherTemplate.docx" -Destination "../SonoGrapher_Backend/backend/" -Force
     Copy-Item -Path "./system_prompt.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
 
-    Set-Content -Path "../SonoGrapher_Backend/backend/rootUserToken.txt" -Value 'Brhyd7MpfC'
+    Set-Content -Path "../SonoGrapher_Backend/backend/rootUserToken.txt" -Value 'Brhyd7MpfC' -NoNewline
 
     Write-Host ""
     Write-Host ""

@@ -17,7 +17,7 @@ echo "Installing..."
 echo ""
 echo ""
 . "../.venv/bin/activate"
-pyinstaller --paths="../.venv/lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm
+pyinstaller --paths="../.venv/lib/site-packages/" --icon="../gui/icons/favicon.ico" app.py -n "SonoGrapher_Backend" -D --noconfirm --recursive-copy-metadata "openai-whisper"
 if [ -d "../SonoGrapher_Backend/" ]; then
     rm -rf "../SonoGrapher_Backend/"
 fi
