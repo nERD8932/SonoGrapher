@@ -13,6 +13,7 @@ import argparse
 import json
 from docxtpl import DocxTemplate
 import sys
+from Markdown2docx import Markdown2docx
 
 
 
@@ -24,7 +25,8 @@ class Backend:
                  local_stt="base",
                  openai_llm="gpt-4o-mini",
                  openai_stt="whisper-1",
-                 openai_key=os.environ.get("OPENAI_API_KEY", "")):
+                 openai_key=os.environ.get("OPENAI_API_KEY", ""),
+                 markdown=False):
 
         # Set up logging obj
         self.log = self.logging_bp()
@@ -36,6 +38,7 @@ class Backend:
         self.local_llm = local_llm
         self.local_stt = local_stt
         self.openai_key = openai_key
+        self.markdown = markdown
 
         if not self.use_local_llm or not self.use_local_stt:
             if self.openai_key == "":
@@ -60,12 +63,21 @@ class Backend:
 
         # Load Deepseek-R1 into memory.
         self.system_prompt = ""
-        with open('./backend/system_prompt.txt', 'r') as f:
-            self.system_prompt = f.read()
+        if self.markdown:
+            with open('./backend/system_prompt_markdown.txt', 'r') as f:
+                self.system_prompt = f.read()
+        else:
+            with open('./backend/system_prompt.txt', 'r') as f:
+                self.system_prompt = f.read()
 
         if self.use_local_llm:
-            ollama.generate(model=self.local_llm, keep_alive=20.0, system=self.system_prompt)
-
+            try:
+                os.system(f"ollama pull {self.local_llm}")
+                ollama.generate(model=self.local_llm, keep_alive=20.0, system=self.system_prompt)
+            except Exception as e:
+                self.log.critical(e)
+                input("Press any key to exit...")
+                sys.exit(-11)
 
         self.app = Flask(__name__)
         self.setup_routes()
@@ -109,10 +121,19 @@ class Backend:
                     result = {'response': response.output_text}
 
                 self.log.info(f"LLM finished generating response, creating document...", extra=extra)
-                json_obj = json.loads(result['response'].split('```json\n')[1].split('```')[0])
-                dt = DocxTemplate("./backend/SonoGrapherTemplate.docx")
-                dt.render({"doc": json_obj})
-                dt.save(f"./backend/generated/{ak}.docx")
+
+                if self.markdown:
+                    with open(f"./backend/generated/{ak}.md", 'w') as f:
+                        f.write(result['response'])
+                    project = Markdown2docx(f"./backend/generated/{ak}")
+                    project.eat_soup()
+                    project.save()
+                else:
+                    json_obj = json.loads(result['response'].split('```json\n')[1].split('```')[0])
+                    self.log.info(json_obj, extra=extra)
+                    dt = DocxTemplate("./backend/SonoGrapherTemplate.docx")
+                    dt.render({"doc": json_obj})
+                    dt.save(f"./backend/generated/{ak}.docx")
                 
                 self.log.info(f"Done!", extra=extra)
                 p = os.path.join(os.getcwd(), "backend\\generated", f"{ak}.docx")
@@ -252,7 +273,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--local-llm-model',
                         type=str,
-                        default="deepseek-r1:7b",
+                        default="gemma3",
                         help='Which Ollama model to use. Look at the possible options at https://ollama.com/search',
                         dest="local_llm_model")
 
@@ -297,6 +318,11 @@ if __name__ == "__main__":
                         help='Set Flask Debug flag',
                         dest="debug")
 
+    parser.add_argument('--generate-markdown',
+                        action='store_true',
+                        help='Generate a report through MarkDown instead of JSON',
+                        dest="markdown")
+
     args = parser.parse_args()
     print(
         r'''
@@ -316,6 +342,7 @@ if __name__ == "__main__":
                       openai_stt=args.openai_stt_model,
                       local_llm=args.local_llm_model,
                       local_stt=args.local_stt_model,
-                      openai_key=args.openai_api_key)
+                      openai_key=args.openai_api_key,
+                      markdown=args.markdown)
 
     backend.app.run(debug=args.debug, host=args.host, port=args.port)

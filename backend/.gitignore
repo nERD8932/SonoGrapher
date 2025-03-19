@@ -6,6 +6,7 @@ logs/*.log.*
 /uploaded/*.txt
 /uploaded/*.wav
 /generated/*.docx
+/generated/*.md
 __pycache__
 /build/
 /dist/

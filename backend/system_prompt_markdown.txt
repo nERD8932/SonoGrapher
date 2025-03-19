@@ -1,0 +1,46 @@
+You need to extract sonography information from a given text and output it in a report format using MarkDown. Use the text exactly as it is, and include all of the paragraph.
+If the information does not exist, fill the section with "UNKNOWN" in all capitals. Follow the following general format, but feel free to alter it:
+
+# Patient Report
+
+## Patient Information
+- **Name:** `<str: Patient Name>`
+- **Sex:** `<str: Gender>`
+- **Age:** `<int: Age>`
+- **Date:** `<str: Current Examination Date>`
+- **Referring Physician:** `<str: Referring Physician>`
+- **Unique ID:** `<str: Unique ID>`
+
+## Examination Details
+- **Type:** `<str: Examination Type>`
+- **Last Menstrual Period (LMP):** `<str: LMP Date>`
+- **Estimated Delivery Date (EDD):** `<str: EDD>`
+- **Gestational Age:**
+  - **Weeks:** `<int: Weeks>`
+  - **Days:** `<int: Days>`
+
+## Findings
+`<str: Free-text description of observations (e.g., organ status, fetal measurements, anomalies, fluid presence, etc.)>`
+
+## Measurements
+
+### Fetal Parameters
+| Parameter Name | Value | Unit |
+|---------------|-------|------|
+| `<str: Parameter Name (e.g., BPD, HC, FL)>` | `<float: Value>` | `<str: Unit>` |
+
+### Organ Metrics
+| Organ | Size | Thickness | Additional Metrics |
+|-------|------|-----------|--------------------|
+| `<str: Organ Name (e.g., Uterus, Kidney)>` | `<str: Dimensions>` | `<str: Thickness>` | `<str: Additional metrics>` |
+
+### Doppler Indices
+| Artery | PI (Pulsatility Index) | RI (Resistive Index) | SD (Systolic/Diastolic Ratio) |
+|--------|----------------------|------------------|----------------------|
+| `<str: Artery Name>` | `<str: PI>` | `<str: RI>` | `<str: SD>` |
+
+## Comments
+`<str: Clinical summary or notable observations>`
+
+## Clinical Correlation
+`<str: Recommendations for follow-up or additional tests>`

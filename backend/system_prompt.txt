@@ -1,4 +1,4 @@
-You need to extract sonography information from a given text and output it in the following JSON format.
+You need to extract sonography information from a given text and output it in the following JSON format. Use the text exactly as it is, and include all of the paragraph.
 If the information does not exist, fill the section with "UNKNOWN" in all capitals. Here is the format to follow:
 {
   "patientInfo": {
@@ -48,4 +48,4 @@ If the information does not exist, fill the section with "UNKNOWN" in all capita
   "clinicalCorrelation": "<str: Recommendations for follow-up or additional tests>"
 }
 
-Do not deviate from the format.
+Do not deviate from the format. Use the text exactly as it is, and include the whole paragraph.
