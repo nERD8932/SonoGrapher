@@ -60,6 +60,14 @@ Additional features:
 - **Template:** Modify the output document template in SonoGrapherTemplate.docx
 - **Logging:** Logs are stored in backend/logs/debug.log using a rotating file handler. Temporary uploads are managed in backend/uploaded/.
 
+### Running the React Webapp Frontend
+
+No additional setup necessary! If you've installed the backend, you should be able to access the webapp on the root page (`http://localhost:5000/` by default)
+
+* Drag and drop your file into the designated area, or select it through the file selector.
+* Adjust the URI and Auth token if need be, and press generate
+* The generated document will automatically get downloaded!
+
 ### Running the Desktop Frontend
 
 Here is a general overview of how to run the desktop frontend
@@ -84,6 +92,7 @@ Here is a general overview of how to run the desktop frontend
   ```
 - Run `build_frontend.ps1` on Windows (right-click and select 'Run with PowerShell'), or `build_frontend.sh` on Linux
 - An executable called `SonoGrapher_Frontend(.exe)` will have been created in the main directory of the repository. Navigate into it and open the executable to start the server.
+- !!NOTE!!: Please remember to define `BEARER_TOKEN` and `API_URL` in your environment variables, or a .env file, if they differ from the default. You should not use the default token in a production environment
 
 ## API Endpoint
 

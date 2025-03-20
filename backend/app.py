@@ -1,5 +1,5 @@
 import torch
-from flask import Flask, request, Response, abort, send_file
+from flask import Flask, request, Response, abort, send_file, send_from_directory
 import ollama
 import whisper
 from openai import OpenAI
@@ -21,7 +21,7 @@ class Backend:
     def __init__(self,
                  use_local_stt=False,
                  use_local_llm=False,
-                 local_llm="deepseek-r1:7b",
+                 local_llm="gemma3",
                  local_stt="base",
                  openai_llm="gpt-4o-mini",
                  openai_stt="whisper-1",
@@ -79,11 +79,20 @@ class Backend:
                 input("Press any key to exit...")
                 sys.exit(-11)
 
-        self.app = Flask(__name__)
+        staticDir = os.getcwd() + '/webpage'
+        self.app = Flask(__name__, static_folder=staticDir)
         self.setup_routes()
         # pprint(vars(self))
 
     def setup_routes(self):
+        @self.app.route('/', defaults={'path': ''})
+        @self.app.route('/<path:path>')
+        def serve(path):
+            if path != "" and os.path.exists(self.app.static_folder + '/' + path):
+                return send_from_directory(self.app.static_folder, path)
+            else:
+                return send_from_directory(self.app.static_folder, 'index.html')
+
         @self.app.route('/api/generate-report', methods=["POST"])
         def generate_report() -> Response:
             ak = request.headers.get("Authorization").split(" ")[1]
@@ -138,11 +147,15 @@ class Backend:
                 self.log.info(f"Done!", extra=extra)
                 p = os.path.join(os.getcwd(), "backend\\generated", f"{ak}.docx")
                 # self.log.info(p, extra=extra)
-                return send_file(p, as_attachment=True, download_name='report.docx')
+                response = send_file(p, as_attachment=True, download_name='report.docx')
+                response.headers.add('Access-Control-Allow-Origin', '*')
+                return response
             
             except Exception as e:
                 self.log.error(e, extra=extra)
-                return Response("An error has occurred, please try again later!", mimetype="text/plain")
+                response = Response("An error has occurred, please try again later!", mimetype="text/plain", )
+                response.headers.add('Access-Control-Allow-Origin', '*')
+                return response
 
 
     def convert_audio(self, audio, ak, extra) -> Response or str:
@@ -166,7 +179,9 @@ class Backend:
 
         except Exception as e:
             self.log.error(e, extra=extra)
-            return Response("An error has occurred with transcription, please try again later!", mimetype="text/plain")
+            response = Response("An error has occurred with transcription, please try again later!", mimetype="text/plain")
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
 
         finally:
             if os.path.exists(f"./backend/uploaded/{ak}.wav"):
@@ -183,7 +198,9 @@ class Backend:
             return text
         except Exception as e:
             self.log.error(e, extra=extra)
-            return Response("An error occurred while reading the file, please try again later!", mimetype="text/plain")
+            response =  Response("An error occurred while reading the file, please try again later!", mimetype="text/plain")
+            response.headers.add('Access-Control-Allow-Origin', '*')
+            return response
         finally:
             if os.path.exists(f"./backend/uploaded/{ak}.txt"):
                 os.remove(f'./backend/uploaded/{ak}.txt')

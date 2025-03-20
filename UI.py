@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt, pyqtSignal as Signal, QMimeData, QSize
-from PyQt6.QtGui import QFont, QDropEvent, QIcon, QMovie
+from PyQt6.QtGui import QFont, QDropEvent, QIcon, QMovie, QPixmap
 from PyQt6.QtWidgets import *
 import asyncio
 import sys
@@ -28,6 +28,14 @@ class MainWindow(QMainWindow):
         self.layout = QVBoxLayout()
         self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.layout.setContentsMargins(20, 50, 20, 50)
+
+        self.logo = QLabel(self)
+        self.logo.setAlignment(Qt.AlignmentFlag.AlignTop)
+        pixmap = QPixmap('gui/icons/background.png', )
+        pixmap = pixmap.scaled(200, 200, aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio, transformMode=Qt.TransformationMode.SmoothTransformation)
+        self.logo.setPixmap(pixmap)
+        self.logo.show()
+        self.layout.addWidget(self.logo, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.app_title = QLabel("Sonogram Report Generator")
         self.app_title.setMargin(20)
@@ -107,7 +115,7 @@ class MainWindow(QMainWindow):
 
     @asyncSlot()
     async def fetchDoc(self):
-        headers = {"Authorization": f"Bearer {os.environ.get('BEARER_TOKEN')}"}
+        headers = {"Authorization": f"Bearer {os.environ.get('BEARER_TOKEN', 'Brhyd7MpfC')}"}
 
         try:
             # Move the blocking requests call to a separate thread
@@ -141,7 +149,7 @@ class MainWindow(QMainWindow):
             else:
                 files = {'text': file}
 
-            r = requests.post("http://127.0.0.1:5000/api/generate-report", headers=headers, files=files)
+            r = requests.post(os.environ.get('API_URL', "http://127.0.0.1:5000/api/generate-report"), headers=headers, files=files)
             # pprint(vars(r))
             return r
 
