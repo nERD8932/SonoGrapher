@@ -15,7 +15,7 @@ from docxtpl import DocxTemplate
 import sys
 from Markdown2docx import Markdown2docx
 import pypandoc
-from pypandoc.pandoc_download import download_pandoc
+
 
 
 
@@ -23,7 +23,7 @@ class Backend:
     def __init__(self,
                  use_local_stt=False,
                  use_local_llm=False,
-                 local_llm="deepseek-r1:7b",
+                 local_llm="deepseek-r1:8b",
                  local_stt="base",
                  openai_llm="gpt-4o-mini",
                  openai_stt="whisper-1",
@@ -63,7 +63,10 @@ class Backend:
         # Load Speech-To-Text through Whisper
         self.stt = self.load_whisper()
 
-        download_pandoc()
+        if os.name == "posix":
+            os.environ.setdefault("PYPANDOC_PANDOC", "./backend/pypandoc/pandoc")
+        elif os.name == "nt":
+            os.environ.setdefault("PYPANDOC_PANDOC", "./backend/pypandoc/pandoc.exe")
 
         # Load Deepseek-R1 into memory.
         try:
@@ -299,7 +302,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--local-llm-model',
                         type=str,
-                        default="deepseek-r1:7b",
+                        default="deepseek-r1:8b",
                         help='Which Ollama model to use. Look at the possible options at https://ollama.com/search',
                         dest="local_llm_model")
 

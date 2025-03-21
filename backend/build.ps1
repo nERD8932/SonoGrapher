@@ -44,7 +44,9 @@ try{
     Copy-Item -Path "./system_prompt_json.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
     Copy-Item -Path "./system_prompt_html.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
     Copy-Item -Path "./system_prompt_markdown.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
-    Copy-Item -Path "./webpage" -Destination "../SonoGrapher_Backend/webpage/" -Force -Recurse
+    Copy-Item -Path "../webpage" -Destination "../SonoGrapher_Backend/webpage/" -Force -Recurse
+    Copy-Item -Path "../.venv/Lib/site-packages/pypandoc/files/" -Destination "../SonoGrapher_Backend/backend/pypandoc/" -Force -Recurse
+
 
     Set-Content -Path "../SonoGrapher_Backend/backend/rootUserToken.txt" -Value 'Brhyd7MpfC' -NoNewline
 

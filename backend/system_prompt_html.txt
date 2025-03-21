@@ -14,8 +14,8 @@ Include the information mentioned below too; if the information does not exist, 
     "lastMenstrualPeriod": "<str: LMP Date>",
     "estimatedDeliveryDate": "<str: EDD>",
     "gestationalAge": {
-      "weeks": "<int: Weeks>",
-      "days": "<int: Days>"
+      "weeks": "<int: Weeks> weeks",
+      "days": "<int: Days> days"
     }
   },
   "findings": "<str: Free-text description of observations (e.g., organ status, fetal measurements, anomalies, fluid presence, etc.)>",
