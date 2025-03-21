@@ -1,4 +1,4 @@
-You need to extract sonography information from a given text and output it in a HTML format which will be converted to DOCX. Represent all the information in the paragraph accurately.
+You need to extract sonography information from a given text and output it in an HTML format which will be converted to DOCX. Represent all the information in the paragraph accurately.
 Include the information mentioned below too; if the information does not exist, fill the section with "UNKNOWN" in all capitals.:
  {
   "patientInfo": {

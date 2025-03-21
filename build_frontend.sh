@@ -14,7 +14,7 @@ echo "Installing..."
 echo ""
 echo ""
 . "./.venv/bin/activate"
-pyinstaller -F --paths=./.venv/Lib/site-packages/ --icon=./gui/icons/favicon.ico UI.py -n "SonoGrapher_Frontend" --noconsole
+pyinstaller --icon=./gui/icons/favicon.ico UI.py -n "SonoGrapher_Frontend" --noconsole
 if [ -d "./SonoGrapher_Frontend" ]; then
     rm -rf "./SonoGrapher_Frontend"
 fi

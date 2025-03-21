@@ -22,7 +22,7 @@ try
     . "./.venv/Scripts/Activate.ps1"
 
     # Run PyInstaller
-    pyinstaller -F --paths="./.venv/Lib/site-packages/" --icon="./gui/icons/favicon.ico" UI.py -n "SonoGrapher_Frontend" --noconsole
+    pyinstaller -F --icon="./gui/icons/favicon.ico" UI.py -n "SonoGrapher_Frontend" --noconsole
 
     # Remove old executable if it exists
     if (Test-Path "./SonoGrapher_Frontend.exe")
