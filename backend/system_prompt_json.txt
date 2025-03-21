@@ -25,7 +25,8 @@ If the information does not exist, fill the section with "UNKNOWN" in all capita
         "name": "<str: Parameter Name (e.g., BPD, HC, FL)>",
         "value": "<float: Value>",
         "unit": "<str: Unit>"
-      }
+      },
+      "empty": "<bool: 'true' if all the values are unknown, 'false' if even one value is known>"
     ],
     "organMetrics": [
       {
@@ -33,7 +34,8 @@ If the information does not exist, fill the section with "UNKNOWN" in all capita
         "size": "<str: Dimensions>",
         "thickness": "<str: Thickness>",
         "other": "<str: Additional metrics>"
-      }
+      },
+      "empty": "<bool: 'true' if all the values are unknown, 'false' if even one value is known>"
     ],
     "dopplerIndices": [
       {
@@ -41,7 +43,8 @@ If the information does not exist, fill the section with "UNKNOWN" in all capita
         "PI": "<str: Pulsatility Index>",
         "RI": "<str: Resistive Index>",
         "SD": "<str: Systolic/Diastolic Ratio>"
-      }
+      },
+      "empty": "<bool: 'true' if all the values are unknown, 'false' if even one value is known>"
     ]
   },
   "comments": "<str: Clinical summary or notable observations>",

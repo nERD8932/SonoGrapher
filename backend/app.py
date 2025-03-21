@@ -14,6 +14,8 @@ import json
 from docxtpl import DocxTemplate
 import sys
 from Markdown2docx import Markdown2docx
+import pypandoc
+from pypandoc.pandoc_download import download_pandoc
 
 
 
@@ -21,12 +23,12 @@ class Backend:
     def __init__(self,
                  use_local_stt=False,
                  use_local_llm=False,
-                 local_llm="gemma3",
+                 local_llm="deepseek-r1:7b",
                  local_stt="base",
                  openai_llm="gpt-4o-mini",
                  openai_stt="whisper-1",
                  openai_key=os.environ.get("OPENAI_API_KEY", ""),
-                 markdown=False):
+                 gentype='json'):
 
         # Set up logging obj
         self.log = self.logging_bp()
@@ -38,7 +40,7 @@ class Backend:
         self.local_llm = local_llm
         self.local_stt = local_stt
         self.openai_key = openai_key
-        self.markdown = markdown
+        self.gentype = gentype
 
         if not self.use_local_llm or not self.use_local_stt:
             if self.openai_key == "":
@@ -61,14 +63,16 @@ class Backend:
         # Load Speech-To-Text through Whisper
         self.stt = self.load_whisper()
 
+        download_pandoc()
+
         # Load Deepseek-R1 into memory.
-        self.system_prompt = ""
-        if self.markdown:
-            with open('./backend/system_prompt_markdown.txt', 'r') as f:
+        try:
+            self.system_prompt = ""
+            with open(f'./backend/system_prompt_{self.gentype}.txt', 'r') as f:
                 self.system_prompt = f.read()
-        else:
-            with open('./backend/system_prompt.txt', 'r') as f:
-                self.system_prompt = f.read()
+        except Exception as e:
+            self.log.warning(f"Failed to load system_prompt: {e}, Using default system prompt.")
+            self.system_prompt = f"Represent the SonoGraphy information I\'ll give in {self.gentype} format."
 
         if self.use_local_llm:
             try:
@@ -131,18 +135,23 @@ class Backend:
 
                 self.log.info(f"LLM finished generating response, creating document...", extra=extra)
 
-                if self.markdown:
+                if self.gentype == "markdown":
                     with open(f"./backend/generated/{ak}.md", 'w') as f:
                         f.write(result['response'])
                     project = Markdown2docx(f"./backend/generated/{ak}")
                     project.eat_soup()
                     project.save()
-                else:
+                elif self.gentype == "json":
                     json_obj = json.loads(result['response'].split('```json\n')[1].split('```')[0])
-                    self.log.info(json_obj, extra=extra)
+                    # self.log.info(json_obj, extra=extra)
                     dt = DocxTemplate("./backend/SonoGrapherTemplate.docx")
                     dt.render({"doc": json_obj})
                     dt.save(f"./backend/generated/{ak}.docx")
+                else:
+                    htmltext = result['response'].split('```html\n')[1].split('```')[0]
+                    # self.log.info(json_obj, extra=extra)
+                    pypandoc.convert_text(htmltext, 'docx', format='html', outputfile=f"./backend/generated/{ak}.docx")
+
                 
                 self.log.info(f"Done!", extra=extra)
                 p = os.path.join(os.getcwd(), "backend\\generated", f"{ak}.docx")
@@ -290,7 +299,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--local-llm-model',
                         type=str,
-                        default="gemma3",
+                        default="deepseek-r1:7b",
                         help='Which Ollama model to use. Look at the possible options at https://ollama.com/search',
                         dest="local_llm_model")
 
@@ -335,10 +344,11 @@ if __name__ == "__main__":
                         help='Set Flask Debug flag',
                         dest="debug")
 
-    parser.add_argument('--generate-markdown',
-                        action='store_true',
-                        help='Generate a report through MarkDown instead of JSON',
-                        dest="markdown")
+    parser.add_argument('--generate-type',
+                        choices=['json', 'markdown', 'html'],
+                        default='json',
+                        help='LLM information categorization type.',
+                        dest="gentype")
 
     args = parser.parse_args()
     print(
@@ -360,6 +370,6 @@ if __name__ == "__main__":
                       local_llm=args.local_llm_model,
                       local_stt=args.local_stt_model,
                       openai_key=args.openai_api_key,
-                      markdown=args.markdown)
+                      gentype=args.gentype)
 
     backend.app.run(debug=args.debug, host=args.host, port=args.port)

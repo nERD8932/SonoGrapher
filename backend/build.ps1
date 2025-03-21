@@ -41,7 +41,9 @@ try{
     Copy-Item -Path "./app.py" -Destination "../SonoGrapher_Backend/" -Force
     Copy-Item -Path "./database.py" -Destination "../SonoGrapher_Backend/" -Force
     Copy-Item -Path "./SonoGrapherTemplate.docx" -Destination "../SonoGrapher_Backend/backend/" -Force
-    Copy-Item -Path "./system_prompt.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
+    Copy-Item -Path "./system_prompt_json.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
+    Copy-Item -Path "./system_prompt_html.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
+    Copy-Item -Path "./system_prompt_markdown.txt" -Destination "../SonoGrapher_Backend/backend/" -Force
     Copy-Item -Path "./webpage" -Destination "../SonoGrapher_Backend/webpage/" -Force -Recurse
 
     Set-Content -Path "../SonoGrapher_Backend/backend/rootUserToken.txt" -Value 'Brhyd7MpfC' -NoNewline

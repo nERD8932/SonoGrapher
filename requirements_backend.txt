@@ -7,3 +7,4 @@ python-dotenv
 torch
 pyinstaller
 Markdown2docx
+pypandoc_binary

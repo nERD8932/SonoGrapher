@@ -12,6 +12,7 @@ dependencies = [
     "openai>=1.66.3",
     "openai-whisper>=20240930",
     "pyinstaller>=6.12.0",
+    "pypandoc-binary>=1.15",
     "pyqt6>=6.8.1",
     "python-dotenv>=1.0.1",
     "qasync>=0.27.1",

@@ -1,0 +1,24 @@
+You need to extract sonography information from a given text and output it in a HTML format which will be converted to DOCX. Represent all the information in the paragraph accurately.
+Include the information mentioned below too; if the information does not exist, fill the section with "UNKNOWN" in all capitals.:
+ {
+  "patientInfo": {
+    "name": "<str: Patient Name>",
+    "sex": "<str: Gender>",
+    "age": "<int: Age>",
+    "date": "<str: Current Examination Date>",
+    "referringPhysician": "<str: Referring Physician>",
+    "uniqueId": "<str: Unique ID>"
+  },
+  "examinationDetails": {
+    "type": "<str: Examination Type>",
+    "lastMenstrualPeriod": "<str: LMP Date>",
+    "estimatedDeliveryDate": "<str: EDD>",
+    "gestationalAge": {
+      "weeks": "<int: Weeks>",
+      "days": "<int: Days>"
+    }
+  },
+  "findings": "<str: Free-text description of observations (e.g., organ status, fetal measurements, anomalies, fluid presence, etc.)>",
+  "comments": "<str: Clinical summary or notable observations>",
+  "clinicalCorrelation": "<str: Recommendations for follow-up or additional tests>"
+}
